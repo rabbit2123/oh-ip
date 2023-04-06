@@ -1,0 +1,14 @@
+on:
+  schedule:
+    - cron: '32 8 * * *'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+        
+      - name: test ip
+        run: bash test.sh
+        
