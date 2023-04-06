@@ -1,0 +1,35 @@
+
+on:
+  schedule:
+    - cron: '22 8 * * 3,6'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: update china ip
+        shell: bash
+        env:
+          MAXMIND_LICENSE_KEY: ${{ secrets.MAXMIND_LICENSE_KEY }}
+        run: |
+          curl -sS -o geoip.zip "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country-CSV&license_key=${MAXMIND_LICENSE_KEY}&suffix=zip"
+          unzip geoip.zip
+          ip_file=$(ls GeoLite2-Country-CSV_*/GeoLite2-Country-Blocks-IPv4.csv)
+          grep '1814991,1814991' $ip_file |awk -F ',' '{print $1}' > china.txt
+
+      - name: commit files
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add china.txt
+          git commit -m "update china ip"
+          
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
