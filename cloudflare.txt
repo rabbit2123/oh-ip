@@ -3,5 +3,4 @@
 3.113.27.128:10002
 
 # 只适用于pages，https://github.com/rabbit2123/domain-fronting/tree/main/cloud/workers
-8.219.181.118
 8.219.229.170
