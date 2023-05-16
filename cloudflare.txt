@@ -1,4 +1,6 @@
 64.68.192.21
+141.193.213.21
+190.93.244.21
 1.228.170.27:30083
 
 # 只适用于pages，https://github.com/rabbit2123/domain-fronting/tree/main/cloud/workers
