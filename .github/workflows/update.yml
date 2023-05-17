@@ -20,14 +20,18 @@ jobs:
           curl -sS -o geoip.zip "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country-CSV&license_key=${MAXMIND_LICENSE_KEY}&suffix=zip"
           unzip geoip.zip
           ip_file=$(ls GeoLite2-Country-CSV_*/GeoLite2-Country-Blocks-IPv4.csv)
-          grep '1814991,1814991' $ip_file |awk -F ',' '{print $1}' > china.txt
+          grep '1814991,1814991' $ip_file |awk -F ',' '{print $1}' > china.txt.new
 
       - name: commit files
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add china.txt
-          git commit -m "update china ip"
+          diff china.txt.new china.txt
+          if [ $? -ne 0 ]; then (
+            mv china.txt.new china.txt 
+            git add china.txt 
+            git commit -m "update china ip")
+          fi
           
       - name: Push changes
         uses: ad-m/github-push-action@master
