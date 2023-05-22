@@ -27,10 +27,10 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           diff china.txt.new china.txt
-          if [ $? -ne 0 ]; then (
-            mv china.txt.new china.txt 
-            git add china.txt 
-            git commit -m "update china ip")
+          if [ $? -ne 0 ]; then \
+            mv china.txt.new china.txt; \
+            git add china.txt; \
+            git commit -m "update china ip"; \
           fi
           
       - name: Push changes
