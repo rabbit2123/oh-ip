@@ -7,6 +7,9 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v3
         with:
@@ -26,8 +29,8 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          r=$(diff china.txt.new china.txt; echo $?)
-          if [ $r -ne 0 ]; then \
+          r=0; diff china.txt.new china.txt || r=$?
+          if [ "$r" -ne 0 ]; then \
             mv china.txt.new china.txt; \
             git add china.txt; \
             git commit -m "update china ip"; \
